@@ -1,10 +1,13 @@
 {
-  "name": "task-server-cdk-2",
+  "name": "task-server-cdk",
   "version": "0.1.0",
   "bin": {
-    "task-server-cdk-2": "bin/task-server-cdk-2.js"
+    "task-server-cdk": "bin/task-server-cdk.js"
   },
   "scripts": {
+    "pristine": "npm run clean ; rm -fr cdk.out node_modules",
+    "clean": "rm -fr dist/",
+    "prebuild": "npm run clean",
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",

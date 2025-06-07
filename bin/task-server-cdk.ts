@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
-import { TaskServerCdk2Stack } from '../lib/task-server-cdk-2-stack';
+import { TaskServerCdkStack } from '../lib/task-server-cdk-stack';
 
 const app = new cdk.App();
-new TaskServerCdk2Stack(app, 'TaskServerCdk2Stack', {
+new TaskServerCdkStack(app, 'TaskServerCdkStack', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */
