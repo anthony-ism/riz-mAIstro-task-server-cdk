@@ -69,7 +69,7 @@ export class TaskServerCdkStack extends cdk.Stack {
               const commands = [
                 `(cd ../task-server`,
                 `uv run pip3 install -r requirements.txt -t ${outputDir}`,
-                `uv run pip3 install --platform manylinux2014_x86_64 --target=${outputDir} --implementation cp --python-version 3.12 --only-binary=:all: --upgrade fastapi>=0.115.12`,
+                `uv run pip3 install --platform manylinux2014_x86_64 --target=${outputDir} --implementation cp --python-version 3.12 --only-binary=:all: --upgrade "fastapi>=0.115.12"`,
                 `cp -a . ${outputDir})`
               ];
 
@@ -95,7 +95,7 @@ export class TaskServerCdkStack extends cdk.Stack {
     });
 
     // API Gateway Resource
-    const mcpResource = api.root.addResource('api');
+    const mcpResource = api.root.addResource('mcp');
 
     // API Gateway Method
     const integration = new apigateway.LambdaIntegration(taskMcpServerLambdaFunction, {
