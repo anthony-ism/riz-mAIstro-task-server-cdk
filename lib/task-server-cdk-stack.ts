@@ -51,43 +51,21 @@ export class TaskServerCdkStack extends cdk.Stack {
       ],
     }));
 
-  const taskMcpServerLambdaFunction = new lambda.Function(this, 'python-lambda', {
-      runtime: lambda.Runtime.PYTHON_3_12,
-      handler: 'main.handler',
-      code: lambda.Code.fromAsset('../task-server', {
-        bundling: {
-          image: lambda.Runtime.PYTHON_3_12.bundlingImage,
-          command: [],
-          local: {
-            tryBundle(outputDir: string) {
-              try {
-                execSync('(cd ../task-server ; source .venv/bin/activate)');
-              } catch {
-                return false;
-              }
-
-              const commands = [
-                `(cd ../task-server`,
-                `uv run pip3 install -r requirements.txt -t ${outputDir}`,
-                `uv run pip3 install --platform manylinux2014_x86_64 --target=${outputDir} --implementation cp --python-version 3.12 --only-binary=:all: --upgrade "fastapi>=0.115.12"`,
-                `cp -a . ${outputDir})`
-              ];
-
-              execSync(commands.join(' && '));
-              return true;
-            }
-          }
-        }
-      }),
-      memorySize: 1024,
-      functionName: 'taskMcpServer',
-      timeout: Duration.seconds(1)
-  });
+    // Lambda Functions for MCP Servers
+    const taskMcpServerLambdaFunction = new lambda.Function(this, 'TaskMcpServerLambda', {
+      runtime: lambda.Runtime.NODEJS_22_X,
+      handler: 'src/index.handler',
+      code: lambda.Code.fromAsset('../task-server'),
+      role: lambdaRole,
+      environment: {
+        TASK_TABLE_NAME: taskTable.tableName,
+      },
+    });
   
 
     // API Gateway REST API
     const api = new apigateway.RestApi(this, 'ApiGatewayRestApi', {
-      restApiName: 'dev-mcp-server',
+      restApiName: 'task-mcp-server',
       endpointConfiguration: {
         types: [apigateway.EndpointType.EDGE],
       },
