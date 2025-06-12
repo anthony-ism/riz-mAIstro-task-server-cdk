@@ -5,14 +5,12 @@
     "task-server-cdk": "bin/task-server-cdk.js"
   },
   "scripts": {
-    "pristine": "npm run clean ; rm -fr cdk.out node_modules",
-    "clean": "rm -fr dist/",
-    "prebuild": "npm run pristine ; npm install",
     "build": "tsc",
-    "watch": "tsc -w",
+    "cdk": "cdk",
+    "clean": "rm -fr dist/ cdk.out",
+    "prebuild": "npm run clean",
     "prerelease": "npm run build",
-    "release": "npm run cdk deploy",
-    "cdk": "cdk"
+    "release": "npm run cdk deploy"
   },
   "devDependencies": {
     "@types/node": "22.7.9",

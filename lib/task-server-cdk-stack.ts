@@ -5,9 +5,6 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as iam from 'aws-cdk-lib/aws-iam';
 
-import { execSync } from 'child_process';
-import { Duration } from 'aws-cdk-lib';
-
 export class TaskServerCdkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -68,8 +65,7 @@ export class TaskServerCdkStack extends cdk.Stack {
       restApiName: 'task-mcp-server',
       endpointConfiguration: {
         types: [apigateway.EndpointType.EDGE],
-      },
-      deploy: true,
+      }
     });
 
     // API Gateway Resource
@@ -95,17 +91,14 @@ export class TaskServerCdkStack extends cdk.Stack {
       stageName: 'dev',
     });
 
-    // Outputs (equivalent to CloudFormation outputs)
     new cdk.CfnOutput(this, 'TaskMcpServerLambdaFunctionQualifiedArn', {
       value: taskMcpServerLambdaFunction.functionArn,
-      description: 'Current Lambda function version',
-      exportName: 'task-mcp-server-dev-TaskMcpServerLambdaFunctionQualifiedArn',
+      exportName: 'TaskMcpServerLambdaFunctionQualifiedArn',
     });
 
     new cdk.CfnOutput(this, 'ServiceEndpoint', {
       value: `https://${api.restApiId}.execute-api.${this.region}.${this.urlSuffix}/dev`,
-      description: 'URL of the service endpoint',
-      exportName: 'task-mcp-server-dev-ServiceEndpoint',
+      exportName: 'TaskMcpServerEndpoint',
     });
   }
 }
